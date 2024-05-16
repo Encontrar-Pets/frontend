@@ -55,6 +55,13 @@ export default function Playbook() {
           type="outline"
           variant="tertiary"
         ></Button>
+        <Button
+          label={"Text Button"}
+          onClick={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          type="text"
+        ></Button>
         <Input placeholder={"Input"} value={dummyInput} onChange={(e) => setDummyInput(e)}></Input>
     </div>
   );
