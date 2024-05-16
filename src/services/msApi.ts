@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from "axios";
 export type MSApiTypes = "coreServer";
 
 const API_HOSTS = {
-  coreServer: process.env.CORE_BASE_URL,
+  coreServer: process.env.REACT_APP_CORE_BASE_URL,
 } as { [key: string]: string };
 
 let instances = {} as { [key: string]: AxiosInstance };
