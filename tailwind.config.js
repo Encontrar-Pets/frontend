@@ -20,6 +20,11 @@ module.exports = {
       '2xl': { 'min': '1536px' },
       // => @media (min-width: 1536px) { ... }
     },
+    colors: {
+      primary: "#60815C",
+      secondary: "#F30E0E",
+      tertiary: "#F3EA0E",
+    },
     extend: {},
   },
   plugins: [],
