@@ -26,7 +26,7 @@ export default function Button({
   };
 
   function getTextButtonClassName() {
-    return `rounded p-[14px] border-2 border-transparent bg-transparent hover:opacity-80 hover:border-primary-gray  ${className}`;
+    return `h-[60px] rounded p-[14px] border-2 border-transparent bg-transparent hover:opacity-80 hover:border-primary-gray  ${className}`;
   }
 
   function getOutlineClassName() {
