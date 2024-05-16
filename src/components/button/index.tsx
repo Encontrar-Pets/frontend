@@ -26,15 +26,15 @@ export default function Button({
   };
 
   function getTextButtonClassName() {
-    return `h-[60px] rounded p-[14px] border-2 border-transparent bg-transparent hover:opacity-80 hover:border-primary-gray  ${className}`;
+    return `h-[60px] my-1.5 rounded p-[14px] border-2 border-transparent bg-transparent hover:opacity-80 hover:border-primary-gray  ${className}`;
   }
 
   function getOutlineClassName() {
-    return `h-[60px] border-2 ${borderVariants[variant]} rounded p-[14px] bg-white hover:opacity-70 ${className}`;
+    return `h-[60px] my-1.5 border-2 ${borderVariants[variant]} rounded p-[14px] bg-white hover:opacity-70 ${className}`;
   }
 
   function getFilledClassName() {
-    return `h-[60px] rounded p-4 ${bgVariants[variant]} hover:opacity-80 ${className}`;
+    return `h-[60px] my-1.5 rounded p-4 ${bgVariants[variant]} hover:opacity-80 ${className}`;
   }
 
   switch (type) {
