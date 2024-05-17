@@ -1,17 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "pages/home";
 import PetList from "pages/petlist";
-import Playbook from 'pages/playbook';
+import Playbook from "pages/playbook";
+import ShelterManagement from "pages/shelter-management";
 
 export default function AppRoutes() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/find-pet' element={<PetList />} />
-        <Route path='/playbook' element={<Playbook />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/find-pet" element={<PetList />} />
+        <Route path="/playbook" element={<Playbook />} />
+        <Route path="/shelter-management" element={<ShelterManagement />} />
       </Routes>
     </Router>
-  )
+  );
 }
