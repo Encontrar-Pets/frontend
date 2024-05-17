@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import useApi from "hooks/api";
 import AnimalCard from "components/animalcard";
+import BackButton from 'components/backbutton';
 
 export default function PetList() {
   const [shelters, setShelters] = useState([]);
@@ -33,6 +34,7 @@ export default function PetList() {
   return (
     <div className='flex w-full justify-center px-4'>
       <div className="flex flex-col max-w-96">
+        <BackButton onClick={() => window.location.href = '/'} />
 
         <b className='mt-6 text-gray-700'>Caracteristicas</b>
 
