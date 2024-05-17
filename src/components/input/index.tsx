@@ -7,16 +7,11 @@ type InputProps = {
 };
 
 export default function Input(props: InputProps) {
-  function getInputClassName() {
-    return `h-[56px] border-solid border-[1px] border-secondary-gray text-primary-gray rounded-md py-2 px-4 focus:outline-none ${
-      props.error ? "border-primary-red" : ""
-    } ${props.className} `;
-  }
-
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <input
-        className={getInputClassName()}
+        className={`h-[48px] border-solid border-[1px] border-secondary-gray text-primary-gray rounded-md py-2 px-4 focus:outline-none ${props.error ? "border-primary-red" : ""
+          } ${props.className} `}
         placeholder={props.placeholder}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}

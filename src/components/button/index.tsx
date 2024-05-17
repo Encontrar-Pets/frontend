@@ -25,29 +25,17 @@ export default function Button({
     tertiary: "border-tertiary",
   };
 
-  function getTextButtonClassName() {
-    return `h-[60px] my-1.5 rounded p-[14px] border-2 border-transparent bg-transparent hover:opacity-80 hover:border-primary-gray  ${className}`;
-  }
-
-  function getOutlineClassName() {
-    return `h-[60px] my-1.5 border-2 ${borderVariants[variant]} rounded p-[14px] bg-white hover:opacity-70 ${className}`;
-  }
-
-  function getFilledClassName() {
-    return `h-[60px] my-1.5 rounded p-4 ${bgVariants[variant]} hover:opacity-80 ${className}`;
-  }
-
   switch (type) {
     case "text":
       return (
-        <button className={getTextButtonClassName()} onClick={onClick}>
+        <button className={`h-[50px] my-1.5 rounded p-[14px] border-2 border-transparent bg-transparent hover:opacity-80 hover:border-primary-gray ${className}`} onClick={onClick}>
           <span className={`text-sm font-bold text-primary-gray`}>{label}</span>
         </button>
       );
 
     case "outline":
       return (
-        <button className={getOutlineClassName()} onClick={onClick}>
+        <button className={`h-[50px] my-1.5 border-2 ${borderVariants[variant]} rounded p-[8px] bg-white hover:opacity-70 ${className}`} onClick={onClick}>
           <span className={`text-sm font-bold text-black`}>{label}</span>
         </button>
       );
@@ -55,7 +43,7 @@ export default function Button({
     case "filled":
     default:
       return (
-        <button className={getFilledClassName()} onClick={onClick}>
+        <button className={`h-[50px] my-1.5 rounded p-2 ${bgVariants[variant]} hover:opacity-80 ${className}`} onClick={onClick}>
           <span className={`text-sm font-bold text-white`}>{label}</span>
         </button>
       );

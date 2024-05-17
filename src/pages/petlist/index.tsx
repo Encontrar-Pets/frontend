@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 
-import { useStateWithHistory } from "hooks/useStateWithHistory";
 import useApi from "hooks/api";
-import Select from "components/select";
-import Tag from "components/tag";
-import AnimalCard from "components/animalcard";
+import { useStateWithHistory } from "hooks/useStateWithHistory";
 import BackButton from 'components/backbutton';
+import Select from "components/select";
+import AnimalCard from "components/animalcard";
+import Tag from "components/tag";
+import Input from "components/input";
+import Button from "components/button";
 
 export default function PetList() {
   const [shelters, setShelters] = useState([{ value: 1, label: 'Ulbra Canoas' }]);
   const [selectedShelters, setSelectedShelters] = useState({});
-  const [tags, setTags] = useState([
+  const [tags, setTags] = useStateWithHistory([
     { value: 1, label: 'Caramelo' },
     { value: 2, label: 'Pelo curto' },
     { value: 3, label: 'Bravo' },
@@ -21,6 +23,7 @@ export default function PetList() {
   ]);
   const [selectedTags, setSelectedTags] = useStateWithHistory([]);
   const [pets, setPets] = useState([{}]);
+  const [textInput, setTextInput] = useState('');
 
   const serviceShelters = useApi("coreServer", 'GET', 'shelters', {});
   const servicePetList = useApi("coreServer", 'POST', '', {});
@@ -48,7 +51,6 @@ export default function PetList() {
         <BackButton onClick={() => window.location.href = '/'} />
 
         <h2 className="mt-2">Secione um abrigo:</h2>
-
         <Select
           className="mt-2"
           options={shelters}
@@ -56,8 +58,8 @@ export default function PetList() {
           onChange={(e) => setSelectedShelters(e)}
         />
 
-        <b className='mt-2 text-gray-700'>Caracteristicas</b>
-
+        <b className='mt-3 text-gray-700'>Caracteristicas</b>
+        <span className='text-gray-500'>selecione as opções abaixo:</span>
         <div className="flex flex-row flex-wrap my-2">
           {
             tags.map((tag, index) => (
@@ -77,6 +79,34 @@ export default function PetList() {
             ))
           }
         </div>
+
+        <div className="flex flex-row mt-2">
+          <Input
+            className="mr-2"
+            placeholder="Ou pesquise por uma nova"
+            value={textInput}
+            onChange={(value) => {
+              setTextInput(value);
+            }}
+          />
+          <button
+            disabled={textInput === ''}
+            onClick={() => {
+              if (textInput === '') return;
+              setTags([...tags, { value: tags.length + 1, label: textInput }]);
+              setTextInput('');
+            }}
+            className={`flex ${textInput === '' ? 'bg-primary-light' : 'bg-primary'} h-12 w-14 rounded-lg items-center justify-center`}
+          >
+            <span className="text-white text-[36px] mb-1">+</span>
+          </button>
+        </div>
+        <Button
+          className="mt-4"
+          variant="secondary"
+          label="Pesquisar"
+          onClick={() => { }}
+        />
 
         <div className="overflow-y-scroll  p-4">
           {
