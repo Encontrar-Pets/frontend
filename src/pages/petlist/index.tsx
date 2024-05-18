@@ -9,9 +9,13 @@ import Tag from "components/tag";
 import Input from "components/input";
 import Button from "components/button";
 
+import { IPet } from "types/generic";
+
+type Option = { value: number; label: string };
+
 export default function PetList() {
-  const [shelters, setShelters] = useState([{ value: 1, label: 'Ulbra Canoas' }]);
-  const [selectedShelters, setSelectedShelters] = useState({});
+  const [shelters, setShelters] = useState<Option[]>([]);
+  const [selectedShelter, setSelectedShelter] = useState<Option | null>(null);
   const [tags, setTags] = useStateWithHistory([
     { value: 1, label: 'Caramelo' },
     { value: 2, label: 'Pelo curto' },
@@ -22,28 +26,32 @@ export default function PetList() {
     { value: 7, label: 'Vira Lata' }
   ]);
   const [selectedTags, setSelectedTags] = useStateWithHistory([]);
-  const [pets, setPets] = useState([{}]);
+  const [pets, setPets] = useState<IPet[]>([]);
   const [textInput, setTextInput] = useState('');
 
   const serviceShelters = useApi("coreServer", 'GET', 'shelters', {});
-  const servicePetList = useApi("coreServer", 'POST', '', {});
+  const servicePetList = useApi("coreServer", 'GET', '', {});
 
   useEffect(() => {
     (async () => {
-      // const response = await serviceShelters.fetch({});
-      // if (response) setShelters(response.data);
+      const response = await serviceShelters.fetch({});
+      if (response) setShelters(response.data.map((shelter: any) => {
+        if (!selectedShelter) setSelectedShelter({ value: shelter.id, label: shelter.name });
+        return { value: shelter.id, label: shelter.name }
+      }));
     })()
   }, []);
 
   useEffect(() => {
-    // (async () => {
-    //   const response = await servicePetList.fetch({
-    //     dynamicRoutes: `pets?shelter_id=${selectedShelters.id}&tag_ids=${selectedTags.join('%2C')}`
-    //   });
-    //   if (response) setPets(response.data);
-    // })()
-  }, [selectedShelters, tags]);
-
+    (async () => {
+      if (selectedShelter) {
+        const response = await servicePetList.fetch({
+          dynamicRoutes: `pets?shelter_id=${selectedShelter.value}`
+        });
+        if (response) setPets(response.data);
+      }
+    })()
+  }, [selectedShelter, tags]);
 
   return (
     <div className='flex w-full justify-center px-4'>
@@ -54,18 +62,18 @@ export default function PetList() {
         <Select
           className="mt-2"
           options={shelters}
-          value={selectedShelters}
-          onChange={(e) => setSelectedShelters(e)}
+          value={selectedShelter}
+          onChange={setSelectedShelter}
         />
 
         <b className='mt-3 text-gray-700'>Caracteristicas</b>
         <span className='text-gray-500'>selecione as opções abaixo:</span>
         <div className="flex flex-row flex-wrap my-2">
           {
-            tags.map((tag, index) => (
+            tags.map((tag: Option, index: number) => (
               <Tag
                 id={tag.value}
-                key={index}
+                key={index + 1}
                 description={tag.label}
                 selected={selectedTags?.includes(tag.value)}
                 onClick={() => {
@@ -110,13 +118,13 @@ export default function PetList() {
 
         <div className="overflow-y-scroll  p-4">
           {
-            pets.map((pet, index) => (
+            pets.map((pet) => (
               <AnimalCard
-                key={index}
-                imageUrl="https://i0.statig.com.br/bancodeimagens/78/pt/gs/78ptgsfeddfh638dkkzya5p3y.jpg"
-                onClick={() => window.location.href = '/pet/1'}
-                title="Caramelo Médio"
-                description="Galpão 1 ULBRA - Corredor 4 - Baia 112"
+                key={pet.id}
+                imageUrl={pet.image}
+                onClick={() => window.location.href = `${window.location.origin}/pet/${pet.id}`}
+                title={pet.name}
+                description={pet.description}
               />
             ))
           }
