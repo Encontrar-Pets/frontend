@@ -1,6 +1,6 @@
 type ButtonProps = {
   label: string;
-  onClick: () => void;
+  onClick: (e: any) => boolean | void;
   className?: string;
   type?: "filled" | "outline" | "text";
   variant?: "primary" | "secondary" | "tertiary";
@@ -28,14 +28,20 @@ export default function Button({
   switch (type) {
     case "text":
       return (
-        <button className={`h-[50px] my-1.5 rounded p-[14px] border-2 border-transparent bg-transparent hover:opacity-80 hover:border-primary-gray ${className}`} onClick={onClick}>
+        <button
+          className={`h-[50px] my-1.5 rounded p-[14px] border-2 border-transparent bg-transparent hover:opacity-80 hover:border-primary-gray ${className}`}
+          onClick={onClick}
+        >
           <span className={`text-sm font-bold text-primary-gray`}>{label}</span>
         </button>
       );
 
     case "outline":
       return (
-        <button className={`h-[50px] my-1.5 border-2 ${borderVariants[variant]} rounded p-[8px] bg-white hover:opacity-70 ${className}`} onClick={onClick}>
+        <button
+          className={`h-[50px] my-1.5 border-2 ${borderVariants[variant]} rounded p-[8px] bg-white hover:opacity-70 ${className}`}
+          onClick={onClick}
+        >
           <span className={`text-sm font-bold text-black`}>{label}</span>
         </button>
       );
@@ -43,7 +49,10 @@ export default function Button({
     case "filled":
     default:
       return (
-        <button className={`h-[50px] my-1.5 rounded p-2 ${bgVariants[variant]} hover:opacity-80 ${className}`} onClick={onClick}>
+        <button
+          className={`h-[50px] my-1.5 rounded p-2 ${bgVariants[variant]} hover:opacity-80 ${className}`}
+          onClick={onClick}
+        >
           <span className={`text-sm font-bold text-white`}>{label}</span>
         </button>
       );
