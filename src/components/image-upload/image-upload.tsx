@@ -5,12 +5,13 @@ import Plus from "assets/icons/plus.svg";
 type ImageUploadProps = {
   className?: string;
   onChange: (baseImage: string) => void;
+  placeholder?: string;
 };
 
 export default function ImageUpload(props: ImageUploadProps) {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!image) {
@@ -81,7 +82,7 @@ export default function ImageUpload(props: ImageUploadProps) {
         ) : (
           <div className="flex flex-col justify-center items-center">
             <span className="mb-6 text-primary-gray font-xl font-bold">
-              Adicionar foto
+              {props.placeholder ?? "Adicionar foto"}
             </span>
             <img src={Plus} alt="add" />
           </div>
