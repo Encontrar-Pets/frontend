@@ -2,6 +2,7 @@ import useForm from "hooks/form";
 import Button from "components/button";
 import Input from "components/input";
 import { validate } from "utils/validate";
+import { useNavigate } from "react-router-dom";
 
 const loginValidations = {
   email: [validate.isEmpty()],
@@ -20,15 +21,18 @@ export default function AddShelter() {
     validations: loginValidations,
   });
   const [addForm, onChangeAddForm] = useForm({ validations: addValidations });
+  const navigate = useNavigate();
 
   function handleLogin() {
     const request = loginForm.values;
     console.log("LOGIN", request);
+    navigate("/shelter-management");
   }
 
   function handleSignUp() {
     const request = loginForm.values;
     console.log("SIGN UP", request);
+    navigate("/shelter-management");
   }
 
   return (

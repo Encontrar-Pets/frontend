@@ -1,8 +1,11 @@
 import Logo from "assets/images/rs_flag.png";
 
 import Button from "components/button";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="flex w-full justify-center px-4">
       <div className="flex flex-col max-w-96">
@@ -20,21 +23,27 @@ export default function Home() {
             label="Encontrar Pet"
             type="outline"
             variant="secondary"
-            onClick={() => (window.location.href = "/find-pet")}
+            onClick={() => {
+              navigate("/find-pet");
+            }}
           />
 
           <Button
             label="Gerenciar Abrigo"
             type="outline"
             variant="primary"
-            onClick={() => (window.location.href = "/shelter-management")}
+            onClick={() => {
+              navigate("/shelter");
+            }}
           />
 
           <Button
             label="Informar Pet Perdido"
             type="outline"
             variant="tertiary"
-            onClick={() => (window.location.href = "/info-pet")}
+            onClick={() => {
+              navigate("/info-pet");
+            }}
           />
         </div>
       </div>
