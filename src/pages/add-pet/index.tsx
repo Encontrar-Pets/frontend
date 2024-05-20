@@ -49,14 +49,20 @@ export default function AddPet() {
       image: image ?? "",
       pet_tag_ids: selectedTags,
       shelter_id: shelterId,
-    }
+    };
     console.log("Add pet called", pet);
-  }
+  };
 
   return (
     <div className="flex w-full justify-center px-4">
       <div className="flex flex-col max-w-96">
-        <BackButton onClick={() => (window.location.href = "/shelter-management")} />
+        <BackButton
+          onClick={() => (window.location.href = "/shelter-management")}
+        />
+
+        <h1 className="self-start mt-7 mb-4 text-lg font-semibold text-gray-700">
+          Cadastrat Pet
+        </h1>
 
         <ImageUpload
           className="my-4 w-full"
@@ -64,19 +70,19 @@ export default function AddPet() {
           onChange={setImage}
         />
         <Input
-            className="mt-2"
-            placeholder="Nome"
-            value={(form.getValue("name") as string) ?? ""}
-            error={form.getError("name")}
-            onChange={onChangeForm("name")}
-          />
+          className="mt-2"
+          placeholder="Nome"
+          value={(form.getValue("name") as string) ?? ""}
+          error={form.getError("name")}
+          onChange={onChangeForm("name")}
+        />
         <Input
-            className="mt-4"
-            placeholder="Descrição"
-            value={(form.getValue("description") as string) ?? ""}
-            error={form.getError("description")}
-            onChange={onChangeForm("description")}
-          />
+          className="mt-4"
+          placeholder="Descrição"
+          value={(form.getValue("description") as string) ?? ""}
+          error={form.getError("description")}
+          onChange={onChangeForm("description")}
+        />
         {/* TODO: check if types come from API */}
         <h2 className="mt-2">Tipo:</h2>
         <Select
@@ -85,7 +91,7 @@ export default function AddPet() {
             { value: "D", label: "Cachorro" },
             { value: "C", label: "Gato" },
           ]}
-          value={form.getValue("type") as Option<string> }
+          value={form.getValue("type") as Option<string>}
           onChange={onChangeForm("type")}
           error={form.getError("type")}
         />
