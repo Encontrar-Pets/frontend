@@ -11,7 +11,7 @@ export default function ShelterManagement() {
         <Button
           label={"Cadastrar novo Pet"}
           className="w-full"
-          onClick={() => (window.location.href = "/find-pet")}
+          onClick={() => (window.location.href = "/add-pet")}
         />
 
         <Button
