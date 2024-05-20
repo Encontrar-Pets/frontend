@@ -6,6 +6,7 @@ import Playbook from "pages/playbook";
 import ShelterManagement from "pages/shelter-management";
 import AddShelter from "pages/add-shelter";
 import RecoverPet from "pages/recover-pet";
+import AddPet from "pages/add-pet";
 
 export default function AppRoutes() {
   return (
@@ -17,6 +18,7 @@ export default function AppRoutes() {
         <Route path="/shelter-management" element={<ShelterManagement />} />
         <Route path="/shelter" element={<AddShelter />} />
         <Route path="/recover-pet" element={<RecoverPet />} />
+        <Route path="/add-pet" element={<AddPet />} />
       </Routes>
     </Router>
   );
