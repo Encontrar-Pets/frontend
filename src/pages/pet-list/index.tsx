@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 
 import useApi from "hooks/api";
 import { useStateWithHistory } from "hooks/useStateWithHistory";
-import BackButton from 'components/backbutton';
+import BackButton from 'components/back-button';
 import Select from "components/select";
-import AnimalCard from "components/animalcard";
+import AnimalCard from "components/animal-card";
 import Tag from "components/tag";
 import Input from "components/input";
 import Button from "components/button";
-import Loading from "components/loading";
 import { useLoading } from "context/loadingContext";
 
 import { IPet } from "types/generic";

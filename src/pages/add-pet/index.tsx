@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useStateWithHistory } from "hooks/useStateWithHistory";
-import BackButton from "components/backbutton";
+import BackButton from "components/back-button";
 import Select, { Option } from "components/select";
 import Tag from "components/tag";
 import Input from "components/input";
@@ -135,9 +135,8 @@ export default function AddPet() {
               setTags([...tags, { value: tags.length + 1, label: textInput }]);
               setTextInput("");
             }}
-            className={`flex ${
-              textInput === "" ? "bg-primary-light" : "bg-primary"
-            } h-12 w-14 rounded-lg items-center justify-center`}
+            className={`flex ${textInput === "" ? "bg-primary-light" : "bg-primary"
+              } h-12 w-14 rounded-lg items-center justify-center`}
           >
             <span className="text-white text-[36px] mb-1">+</span>
           </button>
