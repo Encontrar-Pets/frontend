@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 import useApi from "hooks/api";
 import { useStateWithHistory } from "hooks/useStateWithHistory";
@@ -124,13 +125,17 @@ export default function PetList() {
         <div className="overflow-y-scroll  p-4">
           {
             pets.map((pet) => (
-              <AnimalCard
-                key={pet.id}
-                imageUrl={pet.img_url}
-                onClick={() => window.location.href = `${window.location.origin}/pet/${pet.id}`}
-                title={pet.name}
-                description={pet.description}
-              />
+              <Link
+                to={`/pet-details/${pet.id}`}
+                state={{ pet }}
+              >
+                <AnimalCard
+                  key={pet.id}
+                  imageUrl={pet.img_url}
+                  title={pet.name}
+                  description={pet.description}
+                />
+              </Link>
             ))
           }
         </div>
