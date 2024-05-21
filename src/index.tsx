@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { LoadingProvider } from 'context/loadingContext';
+import LoadingComponent from 'components/loading';
 import './index.css';
 
 import Routes from './routes';
@@ -9,7 +11,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Routes />
+    <LoadingProvider>
+      <LoadingComponent />
+      <Routes />
+    </LoadingProvider>
   </React.StrictMode>
 );
 

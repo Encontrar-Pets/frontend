@@ -8,6 +8,8 @@ import AnimalCard from "components/animalcard";
 import Tag from "components/tag";
 import Input from "components/input";
 import Button from "components/button";
+import Loading from "components/loading";
+import { useLoading } from "context/loadingContext";
 
 import { IPet } from "types/generic";
 
@@ -16,21 +18,16 @@ type Option = { value: number; label: string };
 export default function PetList() {
   const [shelters, setShelters] = useState<Option[]>([]);
   const [selectedShelter, setSelectedShelter] = useState<Option | null>(null);
-  const [tags, setTags] = useStateWithHistory([
-    { value: 1, label: 'Caramelo' },
-    { value: 2, label: 'Pelo curto' },
-    { value: 3, label: 'Bravo' },
-    { value: 4, label: 'Castrado' },
-    { value: 5, label: 'Macho' },
-    { value: 6, label: 'Obeso' },
-    { value: 7, label: 'Vira Lata' }
-  ]);
+  const [tags, setTags] = useStateWithHistory([]);
   const [selectedTags, setSelectedTags] = useStateWithHistory([]);
   const [pets, setPets] = useState<IPet[]>([]);
   const [textInput, setTextInput] = useState('');
 
   const serviceShelters = useApi("coreServer", 'GET', 'shelters', {});
+  const serviceTags = useApi("coreServer", 'GET', 'tags', {});
   const servicePetList = useApi("coreServer", 'GET', '', {});
+
+  const { showLoading, hideLoading } = useLoading();
 
   useEffect(() => {
     (async () => {
@@ -44,14 +41,19 @@ export default function PetList() {
 
   useEffect(() => {
     (async () => {
-      if (selectedShelter) {
-        const response = await servicePetList.fetch({
-          dynamicRoutes: `pets?shelter_id=${selectedShelter.value}`
-        });
-        if (response) setPets(response.data);
-      }
+      const response = await serviceTags.fetch({});
+      if (response) setTags(response.data);
     })()
-  }, [selectedShelter, tags]);
+  }, []);
+
+  async function searchPets() {
+    showLoading();
+    const response = await servicePetList.fetch({
+      dynamicRoutes: `pets?shelter_id=${selectedShelter?.value}&status=A&tags=${selectedTags.join(',')}`
+    });
+    if (response) setPets(response.data);
+    hideLoading();
+  }
 
   return (
     <div className='flex w-full justify-center px-4'>
@@ -70,21 +72,24 @@ export default function PetList() {
         <span className='text-gray-500'>selecione as opções abaixo:</span>
         <div className="flex flex-row flex-wrap my-2">
           {
-            tags.map((tag: Option, index: number) => (
-              <Tag
-                id={tag.value}
-                key={index + 1}
-                description={tag.label}
-                selected={selectedTags?.includes(tag.value)}
-                onClick={() => {
-                  if (selectedTags.includes(tag.value)) {
-                    setSelectedTags(selectedTags.filter((t: any) => t !== tag.value))
-                    return;
-                  }
-                  setSelectedTags([...selectedTags, tag.value])
-                }}
-              />
-            ))
+            tags.map((tag: { id: string, description: string }, index: number) => {
+              if (!tag.id) return
+              return (
+                <Tag
+                  id={tag.id}
+                  key={index + 1}
+                  description={tag.description}
+                  selected={selectedTags?.includes(tag.id)}
+                  onClick={() => {
+                    if (selectedTags.includes(tag.id)) {
+                      setSelectedTags(selectedTags.filter((t: any) => t !== tag.id))
+                      return;
+                    }
+                    setSelectedTags([...selectedTags, tag.id])
+                  }}
+                />
+              )
+            })
           }
         </div>
 
@@ -101,7 +106,8 @@ export default function PetList() {
             disabled={textInput === ''}
             onClick={() => {
               if (textInput === '') return;
-              setTags([...tags, { value: tags.length + 1, label: textInput }]);
+              setTags([...tags, { id: tags.length + 1, description: textInput }]);
+              setSelectedTags([...selectedTags, tags.length + 1]);
               setTextInput('');
             }}
             className={`flex ${textInput === '' ? 'bg-primary-light' : 'bg-primary'} h-12 w-14 rounded-lg items-center justify-center`}
@@ -113,7 +119,7 @@ export default function PetList() {
           className="mt-4"
           variant="secondary"
           label="Pesquisar"
-          onClick={() => { }}
+          onClick={async () => await searchPets()}
         />
 
         <div className="overflow-y-scroll  p-4">
@@ -121,7 +127,7 @@ export default function PetList() {
             pets.map((pet) => (
               <AnimalCard
                 key={pet.id}
-                imageUrl={pet.image}
+                imageUrl={pet.img_url}
                 onClick={() => window.location.href = `${window.location.origin}/pet/${pet.id}`}
                 title={pet.name}
                 description={pet.description}

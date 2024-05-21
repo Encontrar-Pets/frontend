@@ -1,5 +1,5 @@
 type TagProps = {
-  id: number;
+  id: string;
   description: string;
   selected?: boolean;
   onClick?: () => void;

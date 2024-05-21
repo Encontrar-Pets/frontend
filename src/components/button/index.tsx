@@ -1,6 +1,6 @@
 type ButtonProps = {
   label: string;
-  onClick: (e: any) => boolean | void;
+  onClick: (e: any) => any | void;
   className?: string;
   type?: "filled" | "outline" | "text";
   variant?: "primary" | "secondary" | "tertiary";

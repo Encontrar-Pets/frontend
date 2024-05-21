@@ -5,5 +5,5 @@ export type IPet = {
   type?: string;
   shelter_id?: number;
   pet_tag_ids?: number[];
-  image: string;
+  img_url: string;
 };

@@ -6,6 +6,7 @@ type AnimalCardProps = {
 };
 
 export default function AnimalCard({ title, description, imageUrl, onClick }: AnimalCardProps) {
+  console.log(imageUrl)
   return (
     <button onClick={onClick} className="block w-full">
       <div className="flex flex-col max-w-sm rounded-lg overflow-hidden shadow-lg bg-white mb-5">
