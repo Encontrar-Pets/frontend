@@ -1,4 +1,5 @@
 import Button from "components/button";
+import { Link } from "react-router-dom";
 
 export default function ShelterManagement() {
   return (
@@ -8,11 +9,16 @@ export default function ShelterManagement() {
           Gerenciamento do abrigo
         </h1>
 
+        <Link
+                to={`/add-pet`}
+                state={{ shelter_id: 'clwcmt7qx000ixg42g2j3h5h4' }}
+              >
         <Button
           label={"Cadastrar novo Pet"}
           className="w-full"
-          onClick={() => (window.location.href = "/add-pet")}
+          onClick={() => {}}
         />
+        </Link>
 
         <Button
           label={"Ver lista de Pets recuperados"}
