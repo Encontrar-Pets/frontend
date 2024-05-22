@@ -5,7 +5,10 @@ import Tag from "components/tag";
 import Button from "components/button";
 import BackButton from 'components/back-button';
 
+import { useNavigate } from "react-router-dom";
+
 export default function PetDetails() {
+  const navigate = useNavigate();
   const location = useLocation();
 
   const { name, img_url, description } = location.state.pet
@@ -36,11 +39,11 @@ export default function PetDetails() {
         <Button
           className='mt-8'
           label='Quero recuperar meu pet'
-          onClick={() => { }}
+          onClick={() => navigate('/recover-pet')}
         />
 
         <Button
-          label='Quero recuperar meu pet'
+          label='Quero ser lar temporário'
           onClick={() => { }}
           variant='secondary'
         />
