@@ -6,6 +6,7 @@ import Tag from "components/tag";
 import Button from "components/button";
 import BackButton from 'components/back-button';
 import useApi from 'hooks/api';
+import { useLoading } from "context/loadingContext";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,6 +14,7 @@ export default function PetDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
+  const { showLoading, hideLoading } = useLoading();
 
   const [pet, setPet] = useState(location?.state?.pet);
 
@@ -21,8 +23,10 @@ export default function PetDetails() {
   useEffect(() => {
     (async () => {
       if (id && !pet) {
+        showLoading();
         const response = await serviceGetPet.fetch({ dynamicRoutes: `pets/details?_id=${id}` });
         if (response) setPet(response.data);
+        hideLoading();
       }
     })()
   }, [id]);
@@ -45,7 +49,7 @@ export default function PetDetails() {
 
   return (
     <div className='flex w-full justify-center px-4'>
-      <div className="flex flex-col max-w-96">
+      <div className="flex flex-col w-full max-w-96">
         <div className='mb-2'>
           <BackButton
             onClick={() => navigate('/find-pet')}

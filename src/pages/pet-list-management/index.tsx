@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import useApi from "hooks/api";
 import { useStateWithHistory } from "hooks/useStateWithHistory";
@@ -15,31 +15,29 @@ import { IPet } from "types/generic";
 
 type Option = { value: number; label: string };
 
-export default function PetList() {
+export default function PetListManagement() {
   const petTypes = [{ value: 'D', label: 'Cachorro' }, { value: 'C', label: 'Gato' }];
+  const status = [
+    { value: 'L', label: 'Perdido' },
+    { value: 'A', label: 'Disponivel' },
+    { value: 'P', label: 'Pendente de Aprovação de Recuperação' },
+    { value: 'R', label: 'Recuperado Pelo Tutor' },
+    { value: 'X', label: 'Pendente de Aprovação de Lar Temporário' },
+    { value: 'T', label: 'Lar Temporário Adotivo' },
+  ];
+
   const [selectedPetType, setSelectedPetType] = useState({} as Option);
-  const [shelters, setShelters] = useState<Option[]>([]);
-  const [selectedShelter, setSelectedShelter] = useState<Option | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState({} as Option);
   const [tags, setTags] = useStateWithHistory([]);
   const [selectedTags, setSelectedTags] = useStateWithHistory([]);
   const [pets, setPets] = useState<IPet[]>([]);
   const [textInput, setTextInput] = useState('');
 
-  const serviceShelters = useApi("coreServer", 'GET', 'shelters', {});
   const serviceTags = useApi("coreServer", 'GET', 'tags', {});
   const servicePetList = useApi("coreServer", 'GET', '', {});
 
   const { showLoading, hideLoading } = useLoading();
-
-  useEffect(() => {
-    (async () => {
-      const response = await serviceShelters.fetch({});
-      if (response) setShelters(response.data.map((shelter: any) => {
-        if (!selectedShelter) setSelectedShelter({ value: shelter.id, label: shelter.name });
-        return { value: shelter.id, label: shelter.name }
-      }));
-    })()
-  }, []);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -51,7 +49,8 @@ export default function PetList() {
   async function searchPets() {
     showLoading();
     const response = await servicePetList.fetch({
-      dynamicRoutes: `pets?type=${selectedPetType.value}&shelter_id=${selectedShelter?.value}&status=A&tags=${selectedTags.join(',')}`
+      //TODO add the correct shelterId based on the user logged in
+      dynamicRoutes: `pets?type=${selectedPetType.value}&shelter_id=clwcmt7qx000kxg42u9b646vk&status=${selectedStatus.value}&tags=${selectedTags.join(',')}`
     });
     if (response) setPets(response.data);
     hideLoading();
@@ -60,15 +59,7 @@ export default function PetList() {
   return (
     <div className='flex w-full justify-center px-4'>
       <div className="flex flex-col w-full max-w-96">
-        <BackButton onClick={() => window.location.href = '/'} />
-
-        <h2 className="mt-2">Secione um abrigo:</h2>
-        <Select
-          className="mt-2"
-          options={shelters}
-          value={selectedShelter}
-          onChange={setSelectedShelter}
-        />
+        <BackButton onClick={() => navigate('/')} />
 
         <h2 className="mt-2">Selecione o tipo do pet:</h2>
         <Select
@@ -76,6 +67,14 @@ export default function PetList() {
           options={petTypes}
           value={selectedPetType}
           onChange={setSelectedPetType}
+        />
+
+        <h2 className="mt-2">Selecione o status:</h2>
+        <Select
+          className="mt-2"
+          options={status}
+          value={selectedStatus}
+          onChange={setSelectedStatus}
         />
 
         <b className='mt-3 text-gray-700'>Caracteristicas</b>

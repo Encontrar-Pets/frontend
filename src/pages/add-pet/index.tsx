@@ -67,13 +67,13 @@ export default function AddPet() {
 
   return (
     <div className="flex w-full justify-center px-4">
-      <div className="flex flex-col max-w-96">
+      <div className="flex flex-col w-full max-w-96">
         <BackButton
           onClick={() => (window.location.href = "/shelter-management")}
         />
 
-        <h1 className="self-start mt-7 mb-4 text-lg font-semibold text-gray-700">
-          Cadastrar Pet
+        <h1 className="self-start mt-2 mb-4 text-lg font-semibold text-gray-700">
+          Cadastrat Pet
         </h1>
 
         <ImageUpload
