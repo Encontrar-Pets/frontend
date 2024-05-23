@@ -1,40 +1,76 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { SlLocationPin } from "react-icons/sl";
 
 import Tag from "components/tag";
 import Button from "components/button";
 import BackButton from 'components/back-button';
+import useApi from 'hooks/api';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PetDetails() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
 
-  const { name, img_url, description } = location.state.pet
+  const [pet, setPet] = useState(location?.state?.pet);
 
-  const tmpTags = ['Caramelo', 'Bafudo', 'Comedor de Parachoque', 'Caramelo', 'Bafudo', 'Comedor de Parachoque'];
+  const serviceGetPet = useApi("coreServer", 'GET', '', {});
+
+  useEffect(() => {
+    (async () => {
+      console.log(pet)
+      if (id && !pet) {
+        const response = await serviceGetPet.fetch({ dynamicRoutes: `pets/details?_id=${id}` });
+        if (response) setPet(response.data);
+      }
+    })()
+  }, [id]);
+
+  const generateGoogleMapsLink = (address: string) => {
+    const baseUrl = "https://www.google.com/maps/dir/?api=1&destination=";
+    const encodedAddress = encodeURIComponent(address);
+    return `${baseUrl}${encodedAddress}`;
+  };
+
+  const shareGpsRoute = () => {
+    const address = pet?.shelters?.address;
+    if (address) {
+      const mapsLink = generateGoogleMapsLink(address);
+      window.open(mapsLink, '_blank');
+    } else {
+      alert("Endereço não disponível");
+    }
+  };
 
   return (
     <div className='flex w-full justify-center px-4'>
       <div className="flex flex-col max-w-96">
         <div className='mb-2'>
           <BackButton
-            onClick={() => window.location.href = '/find-pet'}
+            onClick={() => navigate('/find-pet')}
           />
         </div>
-        <img className="flex rounded-t-lg w-full" src={`data:image/png;base64,${img_url}`} alt={name} style={{ width: '100%', height: 300 }} />
 
-        <h1 className="self-start ml-2 mt-1 text-lg font-semibold text-gray-700">{name}</h1>
-        <span className="self-start ml-2 text-sm mb-2 text-primary-gray">{description}</span>
+        <h1 className="self-start  mt-1 text-lg font-semibold text-gray-700">{pet?.name}</h1>
+        <span className="self-start text-sm mb-2 text-primary-gray">{pet?.description}</span>
+
+        <img className="flex rounded-lg w-full" src={`data:image/png;base64,${pet?.img_url}`} alt={pet?.name} style={{ width: '100%', height: 300 }} />
 
         <div>
           {
-            tmpTags.map((tag: any, index) => (
-              <Tag className='mt-2' key={index} id={tag.id} description={tag} />
+            pet?.tags?.map((tag: { id: string, description: string }) => (
+              <Tag className='mt-2' key={tag?.id} id={tag?.id} description={tag?.description} />
             ))
           }
         </div>
+
+        <h2 className="self-start mt-3 text-lg font-semibold text-gray-700">{pet?.shelters?.name}</h2>
+        <button className='flex flex-row items-center' onClick={shareGpsRoute}>
+          <SlLocationPin className='text-primary-gray' />
+          <span className="ml-1 self-start text-sm text-primary-gray">{pet?.shelters?.address}</span>
+        </button>
 
         <Button
           className='mt-8'

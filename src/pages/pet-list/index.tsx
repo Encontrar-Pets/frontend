@@ -77,7 +77,7 @@ export default function PetList() {
               return (
                 <Tag
                   id={tag.id}
-                  key={index + 1}
+                  key={tag.id}
                   description={tag.description}
                   selected={selectedTags?.includes(tag.id)}
                   onClick={() => {
@@ -126,6 +126,7 @@ export default function PetList() {
           {
             pets.map((pet) => (
               <Link
+                key={pet.id}
                 to={`/pet-details/${pet.id}`}
                 state={{ pet }}
               >

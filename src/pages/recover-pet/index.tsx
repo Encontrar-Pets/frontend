@@ -4,6 +4,8 @@ import useForm from "hooks/form";
 import Button from "components/button";
 import ImageUpload from "components/image-upload/image-upload";
 import Input from "components/input";
+import BackButton from 'components/back-button';
+import { useNavigate } from "react-router-dom";
 
 const recoverPetValidations = {
   name: [validate.isEmpty()],
@@ -28,10 +30,15 @@ export default function RecoverPet() {
     console.log("img", image);
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="flex w-full justify-center px-4">
       <div className="flex flex-col overflow-auto max-w-96 w-full">
-        <h1 className="self-start mt-7 mb-4 text-lg font-semibold text-gray-700">
+        <BackButton
+          onClick={() => navigate('/find-pet')}
+        />
+        <h1 className="self-start mt-2 mb-4 text-lg font-semibold text-gray-700">
           Quero recuperar meu Pet
         </h1>
 
@@ -60,7 +67,7 @@ export default function RecoverPet() {
         </form>
 
         <Button
-          label={"Recuperar meu Pet"}
+          label={"Solicitar recuperação"}
           className="w-full my-4"
           onClick={form.trySave(onRecoverPet)}
         />
