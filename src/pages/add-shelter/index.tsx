@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 import useForm from "hooks/form";
 import Button from "components/button";
 import Input from "components/input";
 import { validate } from "utils/validate";
-import { useNavigate } from "react-router-dom";
+import BackButton from "components/back-button";
 
 const loginValidations = {
   email: [validate.isEmpty()],
@@ -37,8 +39,13 @@ export default function AddShelter() {
 
   return (
     <div className="flex w-full justify-center px-4">
-      <div className="flex flex-col max-w-96">
-        <h2 className="mt-4 text-xl font-bold text-primary-gray">
+      <div className="flex flex-col w-full max-w-96">
+
+        <BackButton
+          onClick={() => navigate('/')}
+        />
+
+        <h2 className="mt-1 text-xl font-bold text-primary-gray">
           Entrar com conta existente
         </h2>
 

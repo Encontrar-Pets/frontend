@@ -20,7 +20,6 @@ export default function PetDetails() {
 
   useEffect(() => {
     (async () => {
-      console.log(pet)
       if (id && !pet) {
         const response = await serviceGetPet.fetch({ dynamicRoutes: `pets/details?_id=${id}` });
         if (response) setPet(response.data);

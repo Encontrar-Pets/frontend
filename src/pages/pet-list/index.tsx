@@ -57,7 +57,7 @@ export default function PetList() {
 
   return (
     <div className='flex w-full justify-center px-4'>
-      <div className="flex flex-col max-w-96">
+      <div className="flex flex-col w-full max-w-96">
         <BackButton onClick={() => window.location.href = '/'} />
 
         <h2 className="mt-2">Secione um abrigo:</h2>
