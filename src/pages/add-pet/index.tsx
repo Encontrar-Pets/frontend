@@ -73,7 +73,7 @@ export default function AddPet() {
         />
 
         <h1 className="self-start mt-7 mb-4 text-lg font-semibold text-gray-700">
-          Cadastrat Pet
+          Cadastrar Pet
         </h1>
 
         <ImageUpload

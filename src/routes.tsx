@@ -8,6 +8,7 @@ import ShelterManagement from "pages/shelter-management";
 import AddShelter from "pages/add-shelter";
 import RecoverPet from "pages/recover-pet";
 import AddPet from "pages/add-pet";
+import { InfoPet } from "pages/info-pet";
 
 export default function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ export default function AppRoutes() {
         <Route path="/shelter" element={<AddShelter />} />
         <Route path="/recover-pet" element={<RecoverPet />} />
         <Route path="/add-pet" element={<AddPet />} />
+        <Route path="/info-pet" element={<InfoPet />} />
       </Routes>
     </Router>
   );
