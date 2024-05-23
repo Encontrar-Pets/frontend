@@ -57,7 +57,7 @@ export default function PetList() {
 
   return (
     <div className='flex w-full justify-center px-4'>
-      <div className="flex flex-col max-w-96">
+      <div className="flex flex-col w-full max-w-96">
         <BackButton onClick={() => window.location.href = '/'} />
 
         <h2 className="mt-2">Secione um abrigo:</h2>
@@ -77,7 +77,7 @@ export default function PetList() {
               return (
                 <Tag
                   id={tag.id}
-                  key={index + 1}
+                  key={tag.id}
                   description={tag.description}
                   selected={selectedTags?.includes(tag.id)}
                   onClick={() => {
@@ -126,6 +126,7 @@ export default function PetList() {
           {
             pets.map((pet) => (
               <Link
+                key={pet.id}
                 to={`/pet-details/${pet.id}`}
                 state={{ pet }}
               >

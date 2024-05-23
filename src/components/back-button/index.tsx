@@ -7,7 +7,7 @@ export default function BackButton({ onClick }: BackButtonProps) {
     <button
       type="button"
       onClick={onClick}
-      className="w-fit p-2 bg-white rounded-lg mt-4"
+      className="flex flex-row items-center w-fit p-2 bg-white rounded-lg mt-4"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,6 +23,7 @@ export default function BackButton({ onClick }: BackButtonProps) {
           d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
         />
       </svg>
+      <span className="ml-2 text-gray-700">Voltar</span>
     </button>
   );
 }
