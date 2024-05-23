@@ -71,7 +71,7 @@ export function InfoPet() {
       <div className="flex flex-col max-w-96">
         <BackButton onClick={() => (window.location.href = '/shelter-management')} />
 
-        <h1 className="self-start mt-7 mb-4 text-lg font-semibold text-gray-700">Cadastrar Pet</h1>
+        <h1 className="self-start mt-7 mb-4 text-lg font-semibold text-gray-700">Cadastrar Pet Perdido</h1>
 
         <ImageUpload className="my-4 w-full" placeholder="Adicionar foto" onChange={setImage} />
         <Input
