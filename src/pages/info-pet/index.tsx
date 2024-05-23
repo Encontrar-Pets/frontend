@@ -1,15 +1,15 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import BackButton from 'components/back-button';
-import Select, {Option} from 'components/select';
+import Select, { Option } from 'components/select';
 import Input from 'components/input';
 import Button from 'components/button';
 import useForm from 'hooks/form';
 import ImageUpload from 'components/image-upload/image-upload';
-import {validate} from 'utils/validate';
+import { validate } from 'utils/validate';
 import useApi from 'hooks/api';
-import {useLoading} from 'context/loadingContext';
-import {ITag, TagList} from 'components/tag-list';
-import {useToast} from 'hooks/use-toast';
+import { useLoading } from 'context/loadingContext';
+import { ITag, TagList } from 'components/tag-list';
+import { useToast } from 'hooks/use-toast';
 
 const addPetValidations = {
   name: [validate.isEmpty()],
@@ -26,7 +26,7 @@ export function InfoPet() {
   const [image, setImage] = useState<string | null>(null);
   const [tags, setTags] = useState<ITag[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const {showLoading, hideLoading} = useLoading();
+  const { showLoading, hideLoading } = useLoading();
   const toast = useToast();
   const serviceTags = useApi('coreServer', 'GET', 'tags', {});
   const pets = useApi('coreServer', 'POST', 'pets/new', {});
@@ -74,10 +74,10 @@ export function InfoPet() {
 
   return (
     <div className="flex w-full justify-center px-4">
-      <div className="flex flex-col max-w-96">
-        <BackButton onClick={() => (window.location.href = '/shelter-management')} />
+      <div className="flex flex-col w-full max-w-96">
+        <BackButton onClick={() => (window.location.href = '/')} />
 
-        <h1 className="self-start mt-7 mb-4 text-lg font-semibold text-gray-700">Cadastrar Pet Perdido</h1>
+        <h1 className="self-start mt-2 mb-4 text-lg font-semibold text-gray-700">Cadastrar Pet Perdido</h1>
 
         <ImageUpload className="my-4 w-full" placeholder="Adicionar foto" onChange={setImage} />
         <Input
@@ -112,8 +112,8 @@ export function InfoPet() {
         <Select
           className="mt-2"
           options={[
-            {value: 'D', label: 'Cachorro'},
-            {value: 'C', label: 'Gato'},
+            { value: 'D', label: 'Cachorro' },
+            { value: 'C', label: 'Gato' },
           ]}
           value={form.getValue('type') as Option<string>}
           onChange={onChangeForm('type')}

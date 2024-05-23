@@ -6,8 +6,7 @@ import { useStateWithHistory } from "hooks/useStateWithHistory";
 import BackButton from 'components/back-button';
 import Select from "components/select";
 import AnimalCard from "components/animal-card";
-import Tag from "components/tag";
-import Input from "components/input";
+import { ITag, TagList } from 'components/tag-list';
 import Button from "components/button";
 import { useLoading } from "context/loadingContext";
 
@@ -23,13 +22,25 @@ export default function PetList() {
   const [tags, setTags] = useStateWithHistory([]);
   const [selectedTags, setSelectedTags] = useStateWithHistory([]);
   const [pets, setPets] = useState<IPet[]>([]);
-  const [textInput, setTextInput] = useState('');
 
   const serviceShelters = useApi("coreServer", 'GET', 'shelters', {});
   const serviceTags = useApi("coreServer", 'GET', 'tags', {});
   const servicePetList = useApi("coreServer", 'GET', '', {});
 
   const { showLoading, hideLoading } = useLoading();
+
+  function addTag(newTag: ITag) {
+    setTags([...tags, newTag]);
+  }
+
+  async function searchPets() {
+    showLoading();
+    const response = await servicePetList.fetch({
+      dynamicRoutes: `pets?type=${selectedPetType.value}&shelter_id=${selectedShelter?.value}&status=A&tags=${selectedTags.join(',')}`
+    });
+    if (response) setPets(response.data);
+    hideLoading();
+  }
 
   useEffect(() => {
     (async () => {
@@ -47,15 +58,6 @@ export default function PetList() {
       if (response) setTags(response.data);
     })()
   }, []);
-
-  async function searchPets() {
-    showLoading();
-    const response = await servicePetList.fetch({
-      dynamicRoutes: `pets?type=${selectedPetType.value}&shelter_id=${selectedShelter?.value}&status=A&tags=${selectedTags.join(',')}`
-    });
-    if (response) setPets(response.data);
-    hideLoading();
-  }
 
   return (
     <div className='flex w-full justify-center px-4'>
@@ -80,51 +82,9 @@ export default function PetList() {
 
         <b className='mt-3 text-gray-700'>Caracteristicas</b>
         <span className='text-gray-500'>selecione as opções abaixo:</span>
-        <div className="flex flex-row flex-wrap my-2">
-          {
-            tags.map((tag: { id: string, description: string }, index: number) => {
-              if (!tag.id) return
-              return (
-                <Tag
-                  id={tag.id}
-                  key={tag.id}
-                  description={tag.description}
-                  selected={selectedTags?.includes(tag.id)}
-                  onClick={() => {
-                    if (selectedTags.includes(tag.id)) {
-                      setSelectedTags(selectedTags.filter((t: any) => t !== tag.id))
-                      return;
-                    }
-                    setSelectedTags([...selectedTags, tag.id])
-                  }}
-                />
-              )
-            })
-          }
-        </div>
 
-        <div className="flex flex-row mt-2">
-          <Input
-            className="mr-2"
-            placeholder="Ou pesquise por uma nova"
-            value={textInput}
-            onChange={(value) => {
-              setTextInput(value);
-            }}
-          />
-          <button
-            disabled={textInput === ''}
-            onClick={() => {
-              if (textInput === '') return;
-              setTags([...tags, { id: tags.length + 1, description: textInput }]);
-              setSelectedTags([...selectedTags, tags.length + 1]);
-              setTextInput('');
-            }}
-            className={`flex ${textInput === '' ? 'bg-primary-light' : 'bg-primary'} h-12 w-14 rounded-lg items-center justify-center`}
-          >
-            <span className="text-white text-[36px] mb-1">+</span>
-          </button>
-        </div>
+        <TagList addTag={addTag} selectedTags={selectedTags} setSelectedTags={setSelectedTags} tags={tags} />
+
         <Button
           className="mt-4"
           variant="secondary"
