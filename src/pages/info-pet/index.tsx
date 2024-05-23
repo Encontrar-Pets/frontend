@@ -32,6 +32,7 @@ export function InfoPet() {
   const pets = useApi('coreServer', 'POST', 'pets/new', {});
 
   async function onAddPet() {
+    if (image === '' || image === null) return toast.showErrorToast('É obrigatório adicionar uma imagem');
     const request = form.values;
     const type = (request['type'] as Option<string>).value;
     const pet = {
@@ -43,7 +44,7 @@ export function InfoPet() {
       },
       status: 'L',
       type: type,
-      img_url: image ?? '',
+      img_url: image.replace('data:image/jpeg;base64,', ''),
       pet_tag_ids: selectedTags.filter((tag: string) => !tag.includes('newTag')),
       new_pet_tag: selectedTags.filter((tag: string) => tag.includes('newTag')).map((id: string) => id.split('-')[0]),
     };
@@ -51,7 +52,12 @@ export function InfoPet() {
     const response = await pets.fetch({
       dynamicParams: pet,
     });
-    if (response) toast.showSuccessToast('Pet cadastrado com sucesso!');
+    if (response) {
+      form.clear({});
+      setImage('');
+      setSelectedTags([]);
+      toast.showSuccessToast('Pet cadastrado com sucesso!');
+    }
     hideLoading();
   }
 

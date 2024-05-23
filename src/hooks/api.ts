@@ -1,13 +1,15 @@
-import React from "react";
-import { Method, ResponseType, AxiosResponse, AxiosInstance } from "axios";
-import MSApi, { MSApiTypes } from "services/msApi";
+import React from 'react';
+import {Method, ResponseType, AxiosResponse, AxiosInstance} from 'axios';
+import MSApi, {MSApiTypes} from 'services/msApi';
 
-const types: { [type: string]: string[] } = {
-  coreServer: ["coreServer"],
+const types: {[type: string]: string[]} = {
+  coreServer: ['coreServer'],
+  ngrok: ['ngrok'],
 };
 
-const apis: { [type: string]: any } = {
+const apis: {[type: string]: any} = {
   coreServer: MSApi,
+  ngrok: MSApi,
 };
 
 export interface UseServiceOptions<Params = any> {
@@ -29,18 +31,10 @@ const useApi = <Response = any, Params = any>(
   apiType: MSApiTypes,
   type: Method,
   route: string,
-  {
-    params,
-    headers,
-    responseType,
-    loading = true,
-    noError = false,
-  }: UseServiceOptions<Params>
+  {params, headers, responseType, loading = true, noError = false}: UseServiceOptions<Params>,
 ) => {
   const [data, setData] = React.useState<AxiosResponse<Response>>();
-  const apiName = Object.keys(types).find((item) =>
-    types[item].includes(apiType)
-  ) as string;
+  const apiName = Object.keys(types).find((item) => types[item].includes(apiType)) as string;
   const API = apis[apiName];
   const api: AxiosInstance = API.getApi(apiType);
 
@@ -52,11 +46,9 @@ const useApi = <Response = any, Params = any>(
     dynamicHeaders,
     dynamicResponseType,
   }: DynamicUseServiceOptions<Params>): Promise<Response> => {
-    const methodParams = ["get", "options", "head", "delete"].includes(
-      type.toLowerCase()
-    )
-      ? { params: dynamicParams ? dynamicParams : params }
-      : { data: dynamicParams ? dynamicParams : params };
+    const methodParams = ['get', 'options', 'head', 'delete'].includes(type.toLowerCase())
+      ? {params: dynamicParams ? dynamicParams : params}
+      : {data: dynamicParams ? dynamicParams : params};
 
     if (loading) {
       // Loading.show();
@@ -91,7 +83,7 @@ const useApi = <Response = any, Params = any>(
     }
   };
 
-  return { response: data, fetch: fetchData };
+  return {response: data, fetch: fetchData};
 };
 
 export default useApi;
